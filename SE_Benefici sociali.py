@@ -234,7 +234,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterBoolean(
             self.PIAP,
-            self.tr('Presenza di Piastra sportiva attrazzata in un buffer di 100m'),
+            self.tr('Presenza di Piastra sportiva attrezzata in un buffer di 100m'),
             )
         )
 
@@ -356,7 +356,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterBoolean(
             self.PIAF,
-            self.tr('Presenza di Piastra sportiva attrazzata in un buffer di 100m'),
+            self.tr('Presenza di Piastra sportiva attrezzata in un buffer di 100m'),
             )
         )
 

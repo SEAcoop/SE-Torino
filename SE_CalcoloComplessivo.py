@@ -270,7 +270,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
 
         # Initialize and write on output raster
         path_output = self.parameterAsString(parameters, self.OUTPUT, context)
-        file_output = path_output + '/SE_01_carbon_sequestration_delta_euro.tiff'
+        file_output = path_output + '/SE_10_SE_total.tiff'
         driver = gdal.GetDriverByName("GTiff")
         [rows, cols] = arr_total.shape
         area_pixel = self.parameterAsInt(parameters, self.PIXEL_RES, context) * self.parameterAsInt(
@@ -293,7 +293,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         f.write("Anno corrente: %i \n" % (present))
         f.write("Anno progetto: %i\n" % (future))
         f.write("Differenza di valore totale (€): %f \n" % (np.sum(arr_total)))
-        f.write("Differenza carbonio sequestrato per unità di superficie (€/ha): %f \n" % (
+        f.write("Differenza per unità di superficie (€/ha): %f \n" % (
             total_area * 10000))
         return {self.OUTPUT: total_area}
 
