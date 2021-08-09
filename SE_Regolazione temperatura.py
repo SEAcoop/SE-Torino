@@ -316,7 +316,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         outdata = None
         band = None
         ds = None
-        file_output = path_output + '/03_regolazione_temperatura_delta_euro.tiff'
+        file_output = path_output + '/SE_03_regolazione_temperatura_delta_euro.tiff'
         driver = gdal.GetDriverByName("GTiff")
         outdata = driver.Create(file_output,  cols, rows, 1, gdal.GDT_Float64)
         outdata.SetGeoTransform(ds_present.GetGeoTransform())##sets same geotransform as input

@@ -681,14 +681,14 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
             lai_lucode[87] = 0.88
             for lucode in np.unique(arr_lucode):
                 try:
-                    arr_ozono[np.where(arr_lucode == lucode)] = (ozono_lucode[lucode] * area_pixel) / 1e6
+                    arr_ozono[np.where(arr_lucode == lucode)] = (ozono_lucode[lucode] * area_pixel) / 1e6 * 1000
                     arr_q[np.where(arr_lucode == lucode)] = (concpm10 * Vd * (
-                            T_lucode[lucode] * lai_lucode[lucode] * area_pixel * 0.5))/1e12
+                            T_lucode[lucode] * lai_lucode[lucode] * area_pixel * 0.5))/1e12 * 1000
                 except:
                     pass
 
         # Initialize and write on output raster
-        file_output = path_output + '/02_concentrazione_Ozono_' + stato + '_ton.tiff'
+        file_output = path_output + '/02_concentrazione_Ozono_' + stato + '_kg.tiff'
         outdata_ozono = driver.Create(file_output, cols, rows, 1, gdal.GDT_Float64)
         outdata_ozono.SetGeoTransform(lucode_data_source.GetGeoTransform())  ##sets same geotransform as input
         outdata_ozono.SetProjection(lucode_data_source.GetProjection())  ##sets same projection as input
@@ -696,7 +696,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         outdata_ozono.FlushCache()
 
         # Initialize and write on output raster
-        file_output = path_output + '/02_concentrazione_PM10_' + stato + '_ton.tiff'
+        file_output = path_output + '/02_concentrazione_PM10_' + stato + '_kg.tiff'
         outdata_pm10 = driver.Create(file_output, cols, rows, 1, gdal.GDT_Float64)
         outdata_pm10.SetGeoTransform(lucode_data_source.GetGeoTransform())  ##sets same geotransform as input
         outdata_pm10.SetProjection(lucode_data_source.GetProjection())  ##sets same projection as input
@@ -799,9 +799,9 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         vel = self.parameterAsDouble(parameters, self.VEL, context)
         arr_F = np.zeros((rows, cols))
         for lucode in alpha.keys():
-            arr_F[np.where(arr_lucode == lucode)] = ((alpha[lucode] + beta[lucode] * vel) * concno2 * 0.365) / 1e4
+            arr_F[np.where(arr_lucode == lucode)] = ((alpha[lucode] + beta[lucode] * vel) * concno2 * 0.365) / 1e4 * 1000
         # Initialize and write on output raster
-        file_output = path_output + '/02_concentrazione_NO2_' + stato + '_ton.tiff'
+        file_output = path_output + '/02_concentrazione_NO2_' + stato + '_kg.tiff'
         outdata_no2 = driver.Create(file_output, cols, rows, 1, gdal.GDT_Float64)
         outdata_no2.SetGeoTransform(lucode_data_source.GetGeoTransform())##sets same geotransform as input
         outdata_no2.SetProjection(lucode_data_source.GetProjection())##sets same projection as input

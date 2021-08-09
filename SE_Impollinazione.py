@@ -287,7 +287,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
                 pass
         # Initialize and write on output raster
         path_output = self.parameterAsString(parameters, self.OUTPUT, context)
-        file_output = path_output + '/SE_09_impollinazione.tiff'
+        file_output = path_output + '/SE_09_impollinazione_delta_euro.tiff'
         driver = gdal.GetDriverByName("GTiff")
         arr_diff_tot = arr_value_future - arr_value_present
         outdata = driver.Create(file_output, cols, rows, 1, gdal.GDT_Float64)

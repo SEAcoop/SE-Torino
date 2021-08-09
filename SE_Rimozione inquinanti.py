@@ -249,7 +249,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
 
         # Initialize and write on output raster
         path_output = self.parameterAsString(parameters, self.OUTPUT, context)
-        file_output = path_output + '/SE_02_rimozione_inquinanti.tiff'
+        file_output = path_output + '/SE_02_rimozione_inquinanti_delta_euro.tiff'
         driver = gdal.GetDriverByName("GTiff")
         [cols, rows] = arr_NO2_present.shape
         diff_tot = np.sum(arr_diff_tot) / (cols * rows )

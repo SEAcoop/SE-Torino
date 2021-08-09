@@ -52,8 +52,6 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
     INPUT7 = 'INPUT7'
     INPUT8 = 'INPUT8'
     INPUT9 = 'INPUT9'
-    INPUT10 = 'INPUT10'
-    INPUT11 = 'INPUT11'
     PIXEL_RES = 'PIXEL_RES'
     OUTPUT = 'OUTPUT'
 
@@ -159,7 +157,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterRasterLayer(
                 self.INPUT6,
-                self.tr('Input Raster Output BENEFICI SOCIALI'),
+                self.tr('Input Raster Output BENEFICI CULTURALI'),
                 [QgsProcessing.TypeRaster]
             )
         )
@@ -194,27 +192,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
             QgsProcessingParameterNumber.Integer,
             2
             )
-        )
-
-        self.addParameter(
-            QgsProcessingParameterNumber(
-            self.INPUT10,
-            self.tr('Anno attuale'),
-            QgsProcessingParameterNumber.Integer,
-            2021
-            )
-        )
-
-
-        self.addParameter(
-            QgsProcessingParameterNumber(
-            self.INPUT11,
-            self.tr('Anno progetto'),
-            QgsProcessingParameterNumber.Integer,
-            2030
-            )
-        )
-        
+        ) 
 
         self.addParameter(
             QgsProcessingParameterFolderDestination(
@@ -281,17 +259,12 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         outdata.SetProjection(ds_input1.GetProjection())##sets same projection as input
         outdata.GetRasterBand(1).WriteArray(arr_total)
         outdata.FlushCache() ##saves to disk!!
-        # Years
-        present = self.parameterAsInt(parameters, self.INPUT10, context)
-        future = self.parameterAsInt(parameters, self.INPUT11, context)
         report_output = path_output + '/SE_totale.txt'
         f = open(report_output, "w+")
         today = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
         f.write("Sommario dell'analisi dei servizi ecosistemici\n")
         f.write("Data: " + today +"\n\n\n")
         f.write("Differenze tra stato di progetto e stato attuale\n\n")
-        f.write("Anno corrente: %i \n" % (present))
-        f.write("Anno progetto: %i\n" % (future))
         f.write("Differenza di valore totale (€): %f \n" % (np.sum(arr_total)))
         f.write("Differenza per unità di superficie (€/ha): %f \n" % (
             total_area * 10000))

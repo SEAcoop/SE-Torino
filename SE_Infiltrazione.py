@@ -47,8 +47,6 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
     INPUTPRE = 'INPUTPRE'
     INPUTRF = 'INPUTRF'
     INPUTFUT = 'INPUTFUT'
-    INPUTTREEP = 'INPUTTREEP'
-    INPUTTREEF = 'INPUTTREEF'
     PIXEL_RES = 'PIXEL_RES'
     OUTPUT = 'OUTPUT'
 
@@ -101,7 +99,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         should provide a basic description about what the algorithm does and the
         parameters and outputs associated with it..
         """
-        return self.tr("Algoritmo per il calcolo del sequesto del carbonio, nell'ambito del calcolo dei Servizi Ecosistemici per la Città di Torino")
+        return self.tr("Algoritmo per il calcolo dell'infiltrazione, nell'ambito del calcolo dei Servizi Ecosistemici per la Città di Torino")
 
     def initAlgorithm(self, config=None):
         """
@@ -120,15 +118,6 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         )
         self.addParameter(
             QgsProcessingParameterNumber(
-            self.INPUTTREEP,
-            self.tr('Numero alberi complessivo stato attuale'),
-            QgsProcessingParameterNumber.Integer,
-            0
-            )
-        )
-        
-        self.addParameter(
-            QgsProcessingParameterNumber(
             self.INPUTPRE,
             self.tr('Anno attuale'),
             QgsProcessingParameterNumber.Integer,
@@ -141,15 +130,6 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
                 self.INPUTRF,
                 self.tr('Raster Infiltrazione Stato di progetto'),
                 [QgsProcessing.TypeRaster]
-            )
-        )
-        
-        self.addParameter(
-            QgsProcessingParameterNumber(
-            self.INPUTTREEF,
-            self.tr('Numero alberi complessivo stato di progetto'),
-            QgsProcessingParameterNumber.Integer,
-            0
             )
         )
         
@@ -201,14 +181,14 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
 
         area_pixel = self.parameterAsInt(parameters, self.PIXEL_RES, context) * self.parameterAsInt(
             parameters, self.PIXEL_RES, context)
-        # Value euro per squared meter
+        # Value euro per cubic meter
         value_coeff = 300
         # Convert to squared meters and assign value
         arr_value_present = value_coeff * (arr_present / 1000) * area_pixel
         arr_value_future = value_coeff * (arr_future / 1000) * area_pixel
         # Initialize and write on output raster
         path_output = self.parameterAsString(parameters, self.OUTPUT, context)
-        file_output = path_output + '/SE_05_infiltrazione.tiff'
+        file_output = path_output + '/SE_05_infiltrazione_delta_euro.tiff'
         driver = gdal.GetDriverByName("GTiff")
         arr_diff_tot = arr_value_future - arr_value_present
         outdata = driver.Create(file_output, cols, rows, 1, gdal.GDT_Float64)
@@ -242,7 +222,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         f.write("RIEPILOGO DATI INPUT stato di progetto\n")
         f.write("Differenze tra stato di progetto e stato attuale\n\n")
         f.write("Anno progetto: %i - %i\n" % (present, future))
-        f.write("Differenza della infiltrazione (mm):: %f \n" % (np.sum(
+        f.write("Differenza della infiltrazione (mm): %f \n" % (np.sum(
             arr_future - arr_present)))
         f.write("Differenza della infiltrazione sulla superficie totale (mc): %f \n" % (
             np.sum((arr_future - arr_present) / 1000 * area_pixel)))

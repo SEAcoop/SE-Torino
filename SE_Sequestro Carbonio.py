@@ -248,7 +248,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
                 np.sum(arr_future) / (cols * rows * area_pixel) * 10000))
         f.write("Valore totale del sequestro di carbonio (€): %f \n\n\n" % ((np.sum(arr_future)*V*coeff) / float((future - present))))
         f.write("Differenze tra stato di progetto e stato attuale\n\n")
-        f.write("Anno progetto: %i - %i\n" % (present, future))
+        f.write("Periodo di analisi: %i - %i\n" % (present, future))
         f.write("Differenza di sequestro carbonio (ton Corg): %f \n" % (np.sum(arr_diff)))
         f.write("Differenza carbonio sequestrato per unità di superficie (ton Corg/ha): %f \n" % (
             carbon_sequestration_difference_area * 10000))

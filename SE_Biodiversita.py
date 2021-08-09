@@ -392,51 +392,65 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         future_raster = self.parameterAsRasterLayer(parameters, self.INPUT2, context)
         ds_future = gdal.Open(future_raster.dataProvider().dataSourceUri())
         arr_future = ds_future.GetRasterBand(1).ReadAsArray()
+
+        # List of options
+        edifici_residenziali = ['assenti o oltre i 400 m', 'tra i 200 e i 400 m', 'tra i 100 e i 200 m', 'entro i 100 m']
+        edifici_industriali = ['assenti o oltre i 500m', 'tra i 250 e i 500 m', 'tra i 100 e i 250 m', 'entro i 100 m']
+        edifici_altri = ['assenti o oltre i 500 m', 'tra i 200 e i 400 m', 'tra i 100 e i 200 m', 'entro i 100 m']
+        viabilita_pedonale = ['assenti o oltre i 1000m', 'tra i 500 e i 1000 m', 'tra i 250 e i 500 m', 'entro i 250 m']
+        viabilita_ciclo = ['assenti o oltre i 200 m', 'tra i 100 e i 200 m', 'tra i 50 e i 100 m', 'entro i 50 m']
+        viabilita_veicolare = ['assenti o oltre i 1000m', 'tra i 500 e i 1000 m', 'tra i 250 e i 500 m', 'entro i 250 m']
+        viabilita_secondaria = ['assenti o oltre i 1000m', 'tra i 500 e i 1000 m', 'tra i 250 e i 500 m', 'entro i 250 m']
+        attrezzata = ['assenti o oltre i 400 m', 'tra i 200 e i 400 m', 'tra i 100 e i 200 m', 'entro i 100 m']
+        trasformazione = ['assenti o oltre i 400 m', 'tra i 200 e i 400 m', 'tra i 100 e i 200 m', 'entro i 100 m']
+        discarica = ['assenti o oltre i 500m', 'tra i 250 e i 500 m', 'tra i 100 e i 250 m', 'entro i 100 m']
+
+
         # Clean negative values
         arr_future[arr_future < 0] = 0
         values_p = [0, 1, 5, 10]
-        p1p = self.parameterAsInt(parameters, self.P1P, context)
-        p1p = values_p[p1p]
-        p2p = self.parameterAsInt(parameters, self.P2P, context)
-        p2p = values_p[p2p]
-        p3p = self.parameterAsInt(parameters, self.P3P, context)
-        p3p = values_p[p3p]
-        p4p = self.parameterAsInt(parameters, self.P4P, context)
-        p4p = values_p[p4p]
-        p5p = self.parameterAsInt(parameters, self.P5P, context)
-        p5p = values_p[p5p]
-        p6p = self.parameterAsInt(parameters, self.P6P, context)
-        p6p = values_p[p6p]
-        p7p = self.parameterAsInt(parameters, self.P7P, context)
-        p7p = values_p[p7p]
-        p8p = self.parameterAsInt(parameters, self.P8P, context)
-        p8p = values_p[p8p]
-        p9p = self.parameterAsInt(parameters, self.P9P, context)
-        p9p = values_p[p9p]
-        p10p = self.parameterAsInt(parameters, self.P10P, context)
-        p10p = values_p[p10p]
+        p1p_id = self.parameterAsInt(parameters, self.P1P, context)
+        p1p = values_p[p1p_id]
+        p2p_id = self.parameterAsInt(parameters, self.P2P, context)
+        p2p = values_p[p2p_id]
+        p3p_id = self.parameterAsInt(parameters, self.P3P, context)
+        p3p = values_p[p3p_id]
+        p4p_id = self.parameterAsInt(parameters, self.P4P, context)
+        p4p = values_p[p4p_id]
+        p5p_id = self.parameterAsInt(parameters, self.P5P, context)
+        p5p = values_p[p5p_id]
+        p6p_id = self.parameterAsInt(parameters, self.P6P, context)
+        p6p = values_p[p6p_id]
+        p7p_id = self.parameterAsInt(parameters, self.P7P, context)
+        p7p = values_p[p7p_id]
+        p8p_id = self.parameterAsInt(parameters, self.P8P, context)
+        p8p = values_p[p8p_id]
+        p9p_id = self.parameterAsInt(parameters, self.P9P, context)
+        p9p = values_p[p9p_id]
+        p10p_id = self.parameterAsInt(parameters, self.P10P, context)
+        p10p = values_p[p10p_id]
         p_sum_p = p1p + p2p + p3p + p4p + p5p + p6p + p7p + p8p + p9p + p10p
 
-        p1f = self.parameterAsInt(parameters, self.P1F, context)
-        p1f = values_p[p1f]
-        p2f = self.parameterAsInt(parameters, self.P2F, context)
-        p2f = values_p[p2f]
-        p3f = self.parameterAsInt(parameters, self.P3F, context)
-        p3 = values_p[p3f]
-        p4f = self.parameterAsInt(parameters, self.P4F, context)
-        p4f = values_p[p4f]
-        p5f = self.parameterAsInt(parameters, self.P5F, context)
-        p5f = values_p[p5f]
-        p6f = self.parameterAsInt(parameters, self.P6F, context)
-        p6f = values_p[p6f]
-        p7f = self.parameterAsInt(parameters, self.P7F, context)
-        p7f = values_p[p7f]
-        p8f = self.parameterAsInt(parameters, self.P8F, context)
-        p8f = values_p[p8f]
-        p9f = self.parameterAsInt(parameters, self.P9F, context)
-        p9f = values_p[p9f]
-        p10f = self.parameterAsInt(parameters, self.P10F, context)
-        p10f = values_p[p10f]
+        p1f_id = self.parameterAsInt(parameters, self.P1F, context)
+        p1f = values_p[p1f_id]
+        p2f_id = self.parameterAsInt(parameters, self.P2F, context)
+        p2f = values_p[p2f_id]
+        p3f_id = self.parameterAsInt(parameters, self.P3F, context)
+        p3f = values_p[p3f_id]
+        p4f_id = self.parameterAsInt(parameters, self.P4F, context)
+        p4f = values_p[p4f_id]
+        p5f_id = self.parameterAsInt(parameters, self.P5F, context)
+        p5f = values_p[p5f_id]
+        p6f_id = self.parameterAsInt(parameters, self.P6F, context)
+        p6f = values_p[p6f_id]
+        p7f_id = self.parameterAsInt(parameters, self.P7F, context)
+        p7f = values_p[p7f_id]
+        p8f_id = self.parameterAsInt(parameters, self.P8F, context)
+        p8f = values_p[p8f_id]
+        p9f_id = self.parameterAsInt(parameters, self.P9F, context)
+        p9f = values_p[p9f_id]
+        p10f_id = self.parameterAsInt(parameters, self.P10F, context)
+        p10f = values_p[p10f_id]
         p_sum_f = p1f + p2f + p3f + p4f + p5f + p6f + p7f + p8f + p9f + p10f
 
         area_pixel = self.parameterAsInt(parameters, self.PIXEL_RES, context) * self.parameterAsInt(
@@ -693,7 +707,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         # Years
         present = self.parameterAsInt(parameters, self.INPUT3, context)
         future = self.parameterAsInt(parameters, self.INPUT4, context)
-
+        
         # Initialize and write on output raster
         path_output = self.parameterAsString(parameters, self.OUTPUT, context)
         file_output = path_output + '/07_biodiversità_presente_Q.tiff'
@@ -732,10 +746,32 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         f.write("Data: " + today +"\n\n\n")
         f.write("Analisi stato di fatto\n\n")
         f.write("Anno corrente: %i \n" % (present))
+        f.write("Edifici residenziali: %s \n" % (edifici_residenziali[p1p_id]))
+        f.write("Edifici industriali: %s \n" % (edifici_industriali[p2p_id]))
+        f.write("Edifici altri: %s \n" % (edifici_altri[p3p_id]))
+        f.write("Viabilita pedonale: %s \n" % (viabilita_pedonale[p4p_id]))
+        f.write("Viabilita ciclo: %s \n" % (viabilita_ciclo[p5p_id]))
+        f.write("Viabilita veicolare: %s \n" % (viabilita_veicolare[p6p_id]))
+        f.write("Viabilita secondaria: %s \n" % (viabilita_secondaria[p7p_id]))
+        f.write("Attrezzata: %s \n" % (attrezzata[p8p_id]))
+        f.write("Trasformazione: %s \n" % (trasformazione[p9p_id]))
+        f.write("Discarica: %s \n" % (discarica[p10p_id]))
+        f.write("\n\n")
         f.write("Valore della biodiversità nello stato attuale (0-1): %f \n" % (np.mean(Q_pres)))
         f.write("Valore totale della biodiversità (€): %f \n\n\n" % (np.sum(value_pres)))
         f.write("Analisi stato di progetto\n\n")
         f.write("Anno progetto: %i \n" % (future))
+        f.write("Edifici residenziali: %s \n" % (edifici_residenziali[p1f_id]))
+        f.write("Edifici industriali: %s \n" % (edifici_industriali[p2f_id]))
+        f.write("Edifici altri: %s \n" % (edifici_altri[p3f_id]))
+        f.write("Viabilita pedonale: %s \n" % (viabilita_pedonale[p4f_id]))
+        f.write("Viabilita ciclo: %s \n" % (viabilita_ciclo[p5f_id]))
+        f.write("Viabilita veicolare: %s \n" % (viabilita_veicolare[p6f_id]))
+        f.write("Viabilita secondaria: %s \n" % (viabilita_secondaria[p7f_id]))
+        f.write("Attrezzata: %s \n" % (attrezzata[p8f_id]))
+        f.write("Trasformazione: %s \n" % (trasformazione[p9f_id]))
+        f.write("Discarica: %s \n" % (discarica[p10f_id]))
+        f.write("\n\n")
         f.write("Valore della biodiversità nello stato di progetto (0-1): %f \n" % (np.mean(Q_fut)))
         f.write("Valore totale della biodiversità (€): %f \n\n\n" % (np.sum(value_fut)))
         f.write("Differenze tra stato di progetto e stato attuale\n\n")
